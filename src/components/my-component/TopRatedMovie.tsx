@@ -8,39 +8,36 @@ import Image from "next/image";
 import { Star, ArrowRight } from "lucide-react";
 const TMDB_BASE_URL = process.env.TMDB_BASE_URL;
 const TMDB_API_TOKEN = process.env.TMDB_API_TOKEN;
-function UpcomingMovie() {
-  const [upcomingMovieData, setUpcomingMovieData] = useState<Movie[]>([]);
-  const getUpcomingMovieData = async () => {
+function TopRatedMovie() {
+  const [topRatedMoviesData, setTopRatedMoviesData] = useState<Movie[]>([]);
+  const PopularMovie = async () => {
     try {
       const response = await axios.get(
-        `${TMDB_BASE_URL}/movie/upcoming?language=en-US&page=1`,
+        `${TMDB_BASE_URL}/movie/top_rated?language=en-US&page=1`,
         {
           headers: {
             Authorization: `Bearer ${TMDB_API_TOKEN}`,
           },
         }
       );
-      console.log("Now Playing Movies:", response.data.results);
-      setUpcomingMovieData(response.data.results);
+      setTopRatedMoviesData(response.data.results);
     } catch (err) {
       console.log(err);
     }
   };
   useEffect(() => {
-    getUpcomingMovieData();
+    PopularMovie();
   }, []);
-  console.log(upcomingMovieData);
-
   return (
-    <div className="p-[5px]">
-      <div className="md:hidden  flex flex-wrap gap-5 mt-8">
+    <div className="p-[5px] mt-5 mb-11">
+      <div className="md:hidden  flex flex-wrap gap-8">
         <div className="w-[100%] max-w-[1175px] flex justify-between items-center mb-5">
-          <h3 className="font-semibold text-2xl ">Upcoming</h3>
+          <h3 className="font-semibold text-2xl ">Top Rated</h3>
           <div className="flex text-sm font-medium gap-2 items-center">
             see more <ArrowRight className="w-4 h-4" />
           </div>
         </div>
-        {upcomingMovieData.slice(0, 10).map((movie) => (
+        {topRatedMoviesData.slice(0, 10).map((movie) => (
           <Card key={movie.id} className="w-[157px] h-[309px]  rounded-[10px]">
             <Image
               src={`https://image.tmdb.org/t/p/w1280${movie.poster_path}`}
@@ -59,15 +56,15 @@ function UpcomingMovie() {
           </Card>
         ))}
       </div>
-      <div className="hidden md:flex w-[100%] flex-col items-center mt-8">
-        <div className="w-[100%] max-w-[1230px] flex justify-between items-center mb-5">
-          <h3 className="font-semibold text-2xl ">Upcoming</h3>
-          <div className="flex text-sm font-medium gap-2 items-center">
-            see more <ArrowRight className="w-4 h-4" />
-          </div>
-        </div>
+      <div className="w-[100%] flex justify-center mt-8">
         <div className="hidden md:flex max-w-[1277px]  md:flex-wrap gap-5">
-          {upcomingMovieData.slice(0, 10).map((movie) => (
+          <div className="w-[100%] max-w-[1230px] flex justify-between items-center mb-5">
+            <h3 className="font-semibold text-2xl ">Top Rated</h3>
+            <div className="flex text-sm font-medium gap-2 items-center">
+              see more <ArrowRight className="w-4 h-4" />
+            </div>
+          </div>
+          {topRatedMoviesData.slice(0, 10).map((movie) => (
             <Card
               key={movie.id}
               className="w-[229px] h-[439px]  rounded-[10px]"
@@ -94,4 +91,4 @@ function UpcomingMovie() {
   );
 }
 
-export default UpcomingMovie;
+export default TopRatedMovie;

@@ -19,21 +19,6 @@ const TMDB_BASE_URL = process.env.TMDB_BASE_URL;
 const TMDB_API_TOKEN = process.env.TMDB_API_TOKEN;
 function CarouselSlider() {
   const [nowPlayingData, setNowPlayingData] = useState<Movie[]>([]);
-  const getMovieData = async () => {
-    try {
-      const response = await axios.get(
-        `${TMDB_BASE_URL}/movie/popular?language=en-US&page=1`,
-        {
-          headers: {
-            Authorization: `Bearer ${TMDB_API_TOKEN}`,
-          },
-        }
-      );
-      console.log(response);
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   const getNowPlayingMovieData = async () => {
     try {
@@ -51,9 +36,7 @@ function CarouselSlider() {
       console.log(err);
     }
   };
-
   useEffect(() => {
-    getMovieData();
     getNowPlayingMovieData();
   }, []);
   return (
@@ -81,7 +64,7 @@ function CarouselSlider() {
                             </h3>
                           </div>
                           <div className="flex gap-1 items-center">
-                            <Star className="text-yellow-400 w-7 h-7" />
+                            <Star className="text-yellow-400 w-7 h-7 fill-yellow-400" />
                             {movie.vote_average}/10
                           </div>
                         </div>
@@ -121,7 +104,7 @@ function CarouselSlider() {
                           alt="Picture of the author"
                           className="absolute "
                         />
-                        <div className="p-5 relative top-0 left-0 min-h-[600px] w-screen flex flex-col justify-center ml-40">
+                        <div className="p-5 relative top-0 left-0 min-h-[500px] w-screen flex flex-col justify-center ml-40">
                           <div className="flex flex-col gap-3">
                             <div className="text-white">
                               <p>Now playing:</p>
@@ -130,7 +113,7 @@ function CarouselSlider() {
                               </h3>
                             </div>
                             <div className="flex gap-1 items-center text-white">
-                              <Star className="text-yellow-400 w-7 h-7" />
+                              <Star className="text-yellow-400 w-7 h-7 fill-yellow-400" />
                               {movie.vote_average}/10
                             </div>
                           </div>
@@ -159,5 +142,4 @@ function CarouselSlider() {
     </div>
   );
 }
-
 export default CarouselSlider;

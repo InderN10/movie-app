@@ -6,6 +6,7 @@ import { Movie } from "@/types/Movie-type";
 import axios from "axios";
 import Image from "next/image";
 import { Star, ArrowRight } from "lucide-react";
+import Link from "next/link";
 const TMDB_BASE_URL = process.env.TMDB_BASE_URL;
 const TMDB_API_TOKEN = process.env.TMDB_API_TOKEN;
 function UpcomingMovie() {
@@ -20,7 +21,6 @@ function UpcomingMovie() {
           },
         }
       );
-      console.log("Now Playing Movies:", response.data.results);
       setUpcomingMovieData(response.data.results);
     } catch (err) {
       console.log(err);
@@ -29,7 +29,6 @@ function UpcomingMovie() {
   useEffect(() => {
     getUpcomingMovieData();
   }, []);
-  console.log(upcomingMovieData);
 
   return (
     <div className="p-[5px]">
@@ -62,9 +61,11 @@ function UpcomingMovie() {
       <div className="hidden md:flex w-[100%] flex-col items-center mt-8">
         <div className="w-[100%] max-w-[1230px] flex justify-between items-center mb-5">
           <h3 className="font-semibold text-2xl ">Upcoming</h3>
-          <div className="flex text-sm font-medium gap-2 items-center">
-            see more <ArrowRight className="w-4 h-4" />
-          </div>
+          <Link href={"/upcoming"}>
+            <div className="flex text-sm font-medium gap-2 items-center">
+              see more <ArrowRight className="w-4 h-4" />
+            </div>
+          </Link>
         </div>
         <div className="hidden md:flex max-w-[1277px]  md:flex-wrap gap-5">
           {upcomingMovieData.slice(0, 10).map((movie) => (

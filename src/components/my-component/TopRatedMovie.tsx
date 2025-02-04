@@ -24,7 +24,9 @@ function TopRatedMovie() {
     } catch (err) {
       console.log(err);
     }
+
   };
+
   useEffect(() => {
     PopularMovie();
   }, []);

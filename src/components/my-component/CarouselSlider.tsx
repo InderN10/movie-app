@@ -14,12 +14,10 @@ import {
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Movie } from "@/types/Movie-type";
-
 const TMDB_BASE_URL = process.env.TMDB_BASE_URL;
 const TMDB_API_TOKEN = process.env.TMDB_API_TOKEN;
 function CarouselSlider() {
   const [nowPlayingData, setNowPlayingData] = useState<Movie[]>([]);
-
   const getNowPlayingMovieData = async () => {
     try {
       const response = await axios.get(
@@ -30,14 +28,29 @@ function CarouselSlider() {
           },
         }
       );
-      console.log("Now Playing Movies:", response.data.results);
       setNowPlayingData(response.data.results);
     } catch (err) {
       console.log(err);
     }
   };
+  // const getTrailerData = async () => {
+  //   try {
+  //     const response = await axios.get(
+  //       `${TMDB_BASE_URL}/movie/${id}/videos?language=en-US`,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${TMDB_API_TOKEN}`,
+  //         },
+  //       }
+  //     );
+  //     console.log("Trailer is hereeeeeeee:", response);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
   useEffect(() => {
     getNowPlayingMovieData();
+    // getTrailerData();
   }, []);
   return (
     <div>

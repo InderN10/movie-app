@@ -5,7 +5,6 @@ import TopRatedMovie from "@/components/my-component/TopRatedMovie";
 import UpcomingMovie from "@/components/my-component/UpcomingMovie";
 
 export default function Home() {
- 
 
   return (
     <div className=" w-screen">

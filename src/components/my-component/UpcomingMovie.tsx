@@ -7,10 +7,14 @@ import axios from "axios";
 import Image from "next/image";
 import { Star, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+
 const TMDB_BASE_URL = process.env.TMDB_BASE_URL;
 const TMDB_API_TOKEN = process.env.TMDB_API_TOKEN;
+
 function UpcomingMovie() {
   const [upcomingMovieData, setUpcomingMovieData] = useState<Movie[]>([]);
+  const router = useRouter();
   const getUpcomingMovieData = async () => {
     try {
       const response = await axios.get(
@@ -26,8 +30,12 @@ function UpcomingMovie() {
       console.log(err);
     }
   };
+  const handleMovieClick = (movieId: number) => {
+    router.push(`/detail/${movieId}`);
+  };
   useEffect(() => {
     getUpcomingMovieData();
+    
   }, []);
 
   return (
@@ -40,7 +48,11 @@ function UpcomingMovie() {
           </div>
         </div>
         {upcomingMovieData.slice(0, 10).map((movie) => (
-          <Card key={movie.id} className="w-[157px] h-[309px]  rounded-[10px]">
+          <Card
+            key={movie.id}
+            className="w-[157px] h-[309px] rounded-[10px]"
+            onClick={() => handleMovieClick(movie.id)}
+          >
             <Image
               src={`https://image.tmdb.org/t/p/w1280${movie.poster_path}`}
               width={157}
@@ -50,7 +62,9 @@ function UpcomingMovie() {
             />
             <div className="p-2">
               <div className="flex items-center gap-1 ">
-                <Star className="text-yellow-400 w-4 h-4 fill-yellow-400" />
+                <Star
+                  className="text-yellow-400 w-4 h-4 fill-yellow-400"
+                />
                 {movie.vote_average}/10
               </div>
               <div className="font-normal text-sm">{movie.title}</div>

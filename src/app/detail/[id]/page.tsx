@@ -1,9 +1,11 @@
 import React from 'react'
+import MovieGuideCard from '../_components/MovieGuideCard'
 
 function page() {
+
   return (
     <div>
-      page21345134
+ <MovieGuideCard/>
     </div>
   )
 }

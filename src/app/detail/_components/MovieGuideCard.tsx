@@ -58,9 +58,10 @@ function MovieGuideCard() {
         // );
 
         setMovieGuide(response.data);
-        console.log("wedsgfwedt", response.data);
+   
 
         setDirector(Director.data);
+console.log(Director.data, "directors");
 
         // setSimilarMovie(similarMovie.data.results);
       } catch (err) {
@@ -111,21 +112,33 @@ function MovieGuideCard() {
           <p className="text-white font-normal text-base">Play trailer</p>
         </div>
       </div>
-      <div className="flex">
-        <div>
+
+      <div className="flex px-5 py-5">
+        <div className="h-[148px] w-[100px] min-h-[148px] min-w-[100px]">
           <Image
             src={`https://image.tmdb.org/t/p/w1280${movieGuide?.poster_path}`}
-            width={8001}
-            height={8010}
+            width={100}
+            height={148}
             alt="Picture of the author"
           />
         </div>
-        <div>
-          {movieGuide &&
-            movieGuide.genre_ids.map((genreId) => (
-              <span key={genreId}>{genreId}</span>
-            ))}
+        <div className="flex flex-col ml-5">
+          <div className="flex gap-1">
+            {movieGuide &&
+              movieGuide.genres.map((genre: { id: number; name: string }) => (
+                <div
+                  className="rounded-full py-[2px] px-[10px] mb-5 h-[20px] font-semibold text-xs border border-gray-400 flex items-center justify-center flex-wrap"
+                  key={genre.id}
+                >
+                  {genre.name}
+                </div>
+              ))}
+          </div>
+          <div>{movieGuide && movieGuide.overview}</div>
         </div>
+      </div>
+      <div>
+        {director && director.name}
       </div>
     </div>
   );

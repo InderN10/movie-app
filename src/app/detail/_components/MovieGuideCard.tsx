@@ -85,7 +85,7 @@ function MovieGuideCard() {
 
   return (
     <div className="flex flex-col items-center">
-      <div className="md:hidden">
+      <div className="lg:hidden">
         <div className="flex justify-between p-5">
           <div className="justify-start items-center text-2xl font-semibold">
             {movieGuide && movieGuide.title}{" "}
@@ -172,7 +172,7 @@ function MovieGuideCard() {
         </div>
       </div>
 
-      <div className="hidden md:block max-w-[1080px] w-[100%] min-w-[768px]">
+      <div className="hidden lg:block max-w-[1080px] w-[100%] min-w-[768px]">
         <div className="flex justify-between p-5">
           <div className="justify-start items-center text-4xl font-bold">
             {movieGuide && movieGuide.title}{" "}

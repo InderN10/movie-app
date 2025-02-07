@@ -12,14 +12,17 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Genres from "./Genres";
+import Link from "next/link";
 function Header() {
   const { setTheme, theme } = useTheme();
   return (
     <div className="mx-5 flex items-center justify-between my-5">
-      <div className="flex gap-2 text-indigo-700 ">
-        <Film />
-        <p className="font-bold"> Movie Z</p>
-      </div>
+      <Link href={"/"}>
+        <div className="flex gap-2 text-indigo-700 ">
+          <Film />
+          <p className="font-bold"> Movie Z</p>
+        </div>
+      </Link>
       <div className="hidden md:flex">
         <DropdownMenu>
           <DropdownMenuTrigger>

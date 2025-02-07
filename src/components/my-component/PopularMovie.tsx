@@ -6,10 +6,12 @@ import { Movie } from "@/types/Movie-type";
 import axios from "axios";
 import Image from "next/image";
 import { Star, ArrowRight } from "lucide-react";
+import { useRouter } from "next/navigation";
 const TMDB_BASE_URL = process.env.TMDB_BASE_URL;
 const TMDB_API_TOKEN = process.env.TMDB_API_TOKEN;
 function PopularMovie() {
   const [popularMovieData, setPopularMoviesData] = useState<Movie[]>([]);
+    const router = useRouter();
   const PopularMovie = async () => {
     try {
       const response = await axios.get(
@@ -25,6 +27,12 @@ function PopularMovie() {
       console.log(err);
     }
   };
+const handleMovieClick = (movieId: number) => {
+  console.log(movieId, "idddddd");
+
+  router.push(`/detail/${movieId}`);
+};
+
   useEffect(() => {
     PopularMovie();
   }, []);
@@ -38,7 +46,11 @@ function PopularMovie() {
           </div>
         </div>
         {popularMovieData.slice(0, 10).map((movie) => (
-          <Card key={movie.id} className="w-[157px] h-[309px]  rounded-[10px]">
+          <Card
+            key={movie.id}
+            className="w-[157px] h-[309px]  rounded-[10px]"
+            onClick={() => handleMovieClick(movie.id)}
+          >
             <Image
               src={`https://image.tmdb.org/t/p/w1280${movie.poster_path}`}
               width={157}
@@ -68,6 +80,7 @@ function PopularMovie() {
             <Card
               key={movie.id}
               className="w-[229px] h-[439px]  rounded-[10px]"
+              onClick={() => handleMovieClick(movie.id)}
             >
               <Image
                 src={`https://image.tmdb.org/t/p/w1280${movie.poster_path}`}

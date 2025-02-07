@@ -197,8 +197,8 @@ function MovieGuideCard() {
             </div>
           </div>
         </div>
-        <div className="flex">
-          <div className="h-[290px] w-[428px] min-h-[290px] min-w-[428px]">
+        <div className="flex justify-between ml-5">
+          <div className="h-[428px] w-[290px] min-h-[427px] min-w-[289px]">
             <Image
               src={`https://image.tmdb.org/t/p/w1280${movieGuide?.poster_path}`}
               width={290}
@@ -214,7 +214,7 @@ function MovieGuideCard() {
               height={428}
               alt="Picture of the author"
             />
-            <div className="absolute bottom-3 left-3 flex items-center gap-2">
+            <div className="absolute bottom-5 left-5 flex items-center gap-2">
               <div className="bg-white w-[40px] h-[40px] flex items-center justify-center rounded-full  ">
                 <Play className="w-4 h-4 text-black" />
               </div>
@@ -222,7 +222,7 @@ function MovieGuideCard() {
             </div>
           </div>
         </div>
-        <div className="flex flex-col ml-5">
+        <div className="flex flex-col ml-5 mt-8">
           <div className="flex gap-1">
             {movieGuide &&
               movieGuide.genres.map((genre: { id: number; name: string }) => (

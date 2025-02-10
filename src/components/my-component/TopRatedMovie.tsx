@@ -7,6 +7,7 @@ import axios from "axios";
 import Image from "next/image";
 import { Star, ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 const TMDB_BASE_URL = process.env.TMDB_BASE_URL;
 const TMDB_API_TOKEN = process.env.TMDB_API_TOKEN;
 function TopRatedMovie() {
@@ -41,9 +42,11 @@ function TopRatedMovie() {
       <div className="md:hidden  flex flex-wrap gap-8">
         <div className="w-[100%] max-w-[1175px] flex justify-between items-center mb-5">
           <h3 className="font-semibold text-2xl ">Top Rated</h3>
-          <div className="flex text-sm font-medium gap-2 items-center">
-            see more <ArrowRight className="w-4 h-4" />
-          </div>
+          <Link href={"/topRated"}>
+            <div className="flex text-sm font-medium gap-2 items-center">
+              see more <ArrowRight className="w-4 h-4" />
+            </div>
+          </Link>
         </div>
         {topRatedMoviesData.slice(0, 10).map((movie) => (
           <Card
@@ -72,9 +75,11 @@ function TopRatedMovie() {
         <div className="hidden md:flex max-w-[1277px]  md:flex-wrap gap-5">
           <div className="w-[100%] max-w-[1230px] flex justify-between items-center mb-5">
             <h3 className="font-semibold text-2xl ">Top Rated</h3>
-            <div className="flex text-sm font-medium gap-2 items-center">
-              see more <ArrowRight className="w-4 h-4" />
-            </div>
+            <Link href={"/topRated"}>
+              <div className="flex text-sm font-medium gap-2 items-center">
+                see more <ArrowRight className="w-4 h-4" />
+              </div>
+            </Link>
           </div>
           {topRatedMoviesData.slice(0, 10).map((movie) => (
             <Card

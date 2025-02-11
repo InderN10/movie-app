@@ -8,21 +8,60 @@ import { Play, Star } from "lucide-react";
 import Image from "next/image";
 import { Director } from "@/types/Direction-type";
 import { CastMember } from "@/types/CastMember";
+
 const TMDB_BASE_URL = process.env.TMDB_BASE_URL;
 const TMDB_API_TOKEN = process.env.TMDB_API_TOKEN;
+
 function MovieGuideCard() {
   const router = useParams();
   const { id } = router;
-
   const [movieGuide, setMovieGuide] = useState<Movie | null>(null);
   const [director, setDirector] = useState<Director | null>(null);
   const [credits, setCredits] = useState<CastMember[] | null>(null);
-  console.log(director);
+  const [trailerData, setTrailerData] = useState<string | null>(null);
 
   const formatRuntime = (minutes: number) => {
     const hours = Math.floor(minutes / 60);
     const mins = minutes % 60;
     return `${hours}h ${mins}m`;
+  };
+
+  const getTrailerData = async (id: number) => {
+    try {
+      const response = await axios.get(
+        `${TMDB_BASE_URL}/movie/${id}/videos?language=en-US`,
+        {
+          headers: {
+            Authorization: `Bearer ${TMDB_API_TOKEN}`,
+          },
+        }
+      );
+      const trailers = response.data.results;
+      if (trailers.length > 0) {
+        const youtubeTrailer = trailers.find(
+          (trailer: { site: string; key: string }) => trailer.site === "YouTube"
+        );
+        if (youtubeTrailer) {
+          setTrailerData(`https://www.youtube.com/embed/${youtubeTrailer.key}`);
+        } else {
+          setTrailerData(null);
+        }
+      } else {
+        setTrailerData(null);
+      }
+      console.log("Trailer is hereeeeee", response);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleMovieClick = (movieId: number) => {
+    console.log(movieId, "idddddd");
+    getTrailerData(movieId);
+  };
+
+  const handleTrailerClose = () => {
+    setTrailerData(null);
   };
 
   useEffect(() => {
@@ -108,7 +147,10 @@ function MovieGuideCard() {
             height={8010}
             alt="Picture of the author"
           />
-          <div className="absolute bottom-3 left-3 flex items-center gap-2">
+          <div
+            className="absolute bottom-3 left-3 flex items-center gap-2 z-50"
+            onClick={() => handleMovieClick(movie.id)}
+          >
             <div className="bg-white w-[40px] h-[40px] flex items-center justify-center rounded-full  ">
               <Play className="w-4 h-4 text-black" />
             </div>
@@ -162,6 +204,31 @@ function MovieGuideCard() {
           </div>
         </div>
       </div>
+
+      {trailerData && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="relative">
+            <button
+              className="absolute top-2 right-2 text-white text-2xl"
+              onClick={handleTrailerClose}
+            >
+              X
+            </button>
+            <iframe
+              src={trailerData}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              width="560"
+              height="315"
+              max-width="560"
+              min-width="315"
+              min-heaght="200"
+              max-height="315"
+              frameBorder="0"
+              allowFullScreen
+            ></iframe>
+          </div>
+        </div>
+      )}
 
       <div className="hidden lg:block max-w-[1080px] w-[100%] min-w-[768px]">
         <div className="flex justify-between p-5">

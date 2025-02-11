@@ -33,21 +33,41 @@ function CarouselSlider() {
       console.log(err);
     }
   };
-  // const getTrailerData = async () => {
-  //   try {
-  //     const response = await axios.get(
-  //       `${TMDB_BASE_URL}/movie/${id}/videos?language=en-US`,
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${TMDB_API_TOKEN}`,
-  //         },
-  //       }
-  //     );
-  //     console.log("Trailer is hereeeeeeee:", response);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
+  const [trailerData, setTrailerData] = useState<string | null>(null);
+  const getTrailerData = async (id: number) => {
+    try {
+      const response = await axios.get(
+        `${TMDB_BASE_URL}/movie/${id}/videos?language=en-US`,
+        {
+          headers: {
+            Authorization: `Bearer ${TMDB_API_TOKEN}`,
+          },
+        }
+      );
+      const trailers = response.data.results;
+      if (trailers.length > 0) {
+        const youtubeTrailer = trailers.find(
+          (trailer: { site: string; key: string }) => trailer.site === "YouTube"
+        );
+        if (youtubeTrailer) {
+          setTrailerData(
+            `https://www.youtube.com/watch?v=${youtubeTrailer.key}`
+          );
+        } else {
+          setTrailerData(null);
+        }
+      } else {
+        setTrailerData(null);
+      }
+      console.log("Trailer is hereeeeee", response);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const handleMovieClick = (movieId: number) => {
+    console.log(movieId, "idddddd");
+    getTrailerData(movieId);
+  };
   useEffect(() => {
     getNowPlayingMovieData();
     // getTrailerData();
@@ -86,7 +106,7 @@ function CarouselSlider() {
                             {movie.overview}
                           </p>
                         </div>
-                        <Button>
+                        <Button onClick={() => handleMovieClick(movie.id)}>
                           <Play />
                           Watch trailer
                         </Button>
@@ -100,6 +120,18 @@ function CarouselSlider() {
           <CarouselPrevious />
         </Carousel>
       </div>
+
+      {trailerData && (
+        <div>
+          <iframe
+            src={trailerData}
+            width="560"
+            height="315"
+            frameBorder="0"
+            allowFullScreen
+          ></iframe>
+        </div>
+      )}
 
       <div className="hidden md:block">
         <Carousel className="w-screens max-h-[600px] flex flex-col p-0 ">
@@ -136,7 +168,7 @@ function CarouselSlider() {
                             </p>
                           </div>
                           <div>
-                            <Button>
+                            <Button onClick={() => handleMovieClick(movie.id)}>
                               <Play />
                               Watch trailer
                             </Button>

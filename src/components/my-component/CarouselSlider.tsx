@@ -14,10 +14,14 @@ import {
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Movie } from "@/types/Movie-type";
+
 const TMDB_BASE_URL = process.env.TMDB_BASE_URL;
 const TMDB_API_TOKEN = process.env.TMDB_API_TOKEN;
+
 function CarouselSlider() {
   const [nowPlayingData, setNowPlayingData] = useState<Movie[]>([]);
+  const [trailerData, setTrailerData] = useState<string | null>(null);
+
   const getNowPlayingMovieData = async () => {
     try {
       const response = await axios.get(
@@ -33,7 +37,7 @@ function CarouselSlider() {
       console.log(err);
     }
   };
-  const [trailerData, setTrailerData] = useState<string | null>(null);
+
   const getTrailerData = async (id: number) => {
     try {
       const response = await axios.get(
@@ -50,9 +54,7 @@ function CarouselSlider() {
           (trailer: { site: string; key: string }) => trailer.site === "YouTube"
         );
         if (youtubeTrailer) {
-          setTrailerData(
-            `https://www.youtube.com/watch?v=${youtubeTrailer.key}`
-          );
+          setTrailerData(`https://www.youtube.com/embed/${youtubeTrailer.key}`);
         } else {
           setTrailerData(null);
         }
@@ -64,14 +66,21 @@ function CarouselSlider() {
       console.log(err);
     }
   };
+
   const handleMovieClick = (movieId: number) => {
     console.log(movieId, "idddddd");
     getTrailerData(movieId);
   };
+ 
+const handleTrailerClose = () => {
+    setTrailerData(null)
+}
+
   useEffect(() => {
     getNowPlayingMovieData();
     // getTrailerData();
   }, []);
+
   return (
     <div>
       <div className="md:hidden">
@@ -122,14 +131,25 @@ function CarouselSlider() {
       </div>
 
       {trailerData && (
-        <div>
-          <iframe
-            src={trailerData}
-            width="560"
-            height="315"
-            frameBorder="0"
-            allowFullScreen
-          ></iframe>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="relative">
+            <button
+              className="absolute top-2 right-2 text-white text-2xl"
+              onClick={handleTrailerClose}
+            >X</button>
+            <iframe
+              src={trailerData}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              width="560"
+              height="315"
+              max-width="560"
+              min-width="315"
+              min-heaght="200"
+              max-height="315"
+              frameBorder="0"
+              allowFullScreen
+            ></iframe>
+          </div>
         </div>
       )}
 

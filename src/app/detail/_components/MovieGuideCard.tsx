@@ -17,7 +17,6 @@ function MovieGuideCard() {
   const [movieGuide, setMovieGuide] = useState<Movie | null>(null);
   const [director, setDirector] = useState<Director | null>(null);
   const [credits, setCredits] = useState<CastMember[] | null>(null);
-  // const [similarMovie, setSimilarMovie] = useState<any>(null);
   console.log(director);
 
   const formatRuntime = (minutes: number) => {
@@ -55,14 +54,6 @@ function MovieGuideCard() {
             },
           }
         );
-        // const similarMovie = await axios.get(
-        //   `${TMDB_BASE_URL}/movie/${id}/similar?language=en-US&page=1`,
-        //   {
-        //     headers: {
-        //       Authorization: `Bearer ${TMDB_API_TOKEN}`,
-        //     },
-        //   }
-        // );
         setCredits(credits.data.cast as CastMember[]);
         console.log(credits.data.cast, "credits");
         setMovieGuide(response.data);

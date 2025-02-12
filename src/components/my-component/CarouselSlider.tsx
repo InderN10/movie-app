@@ -37,7 +37,7 @@ function CarouselSlider() {
       console.log(err);
     }
   };
-
+                
   const getTrailerData = async (id: number) => {
     try {
       const response = await axios.get(

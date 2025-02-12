@@ -149,7 +149,7 @@ function MovieGuideCard() {
           />
           <div
             className="absolute bottom-3 left-3 flex items-center gap-2 z-50"
-            onClick={() => handleMovieClick(movie.id)}
+            onClick={() => handleMovieClick(movieGuide?.id as number)}
           >
             <div className="bg-white w-[40px] h-[40px] flex items-center justify-center rounded-full  ">
               <Play className="w-4 h-4 text-black" />
@@ -272,7 +272,10 @@ function MovieGuideCard() {
               height={428}
               alt="Picture of the author"
             />
-            <div className="absolute bottom-5 left-5 flex items-center gap-2">
+            <div
+              onClick={() => handleMovieClick(movieGuide?.id as number)}
+              className="absolute bottom-5 left-5 flex items-center gap-2"
+            >
               <div className="bg-white w-[40px] h-[40px] flex items-center justify-center rounded-full  ">
                 <Play className="w-4 h-4 text-black" />
               </div>

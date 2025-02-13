@@ -14,6 +14,7 @@ import {
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Movie } from "@/types/Movie-type";
+import Autoplay from "embla-carousel-autoplay";
 
 const TMDB_BASE_URL = process.env.TMDB_BASE_URL;
 const TMDB_API_TOKEN = process.env.TMDB_API_TOKEN;
@@ -37,7 +38,7 @@ function CarouselSlider() {
       console.log(err);
     }
   };
-                
+
   const getTrailerData = async (id: number) => {
     try {
       const response = await axios.get(
@@ -71,20 +72,29 @@ function CarouselSlider() {
     console.log(movieId, "idddddd");
     getTrailerData(movieId);
   };
- 
-const handleTrailerClose = () => {
-    setTrailerData(null)
-}
+
+  const handleTrailerClose = () => {
+    setTrailerData(null);
+  };
 
   useEffect(() => {
     getNowPlayingMovieData();
-    // getTrailerData();
   }, []);
 
   return (
     <div>
       <div className="md:hidden">
-        <Carousel className="w-screen flex flex-col p-0 ">
+        <Carousel
+          className="w-screen flex flex-col p-0 "
+          opts={{
+            loop: true,
+          }}
+          plugins={[
+            Autoplay({
+              delay: 3000,
+            }),
+          ]}
+        >
           <CarouselContent>
             {nowPlayingData.slice(0, 10).map((movie) => (
               <CarouselItem key={movie.id}>
@@ -136,7 +146,9 @@ const handleTrailerClose = () => {
             <button
               className="absolute top-2 right-2 text-white text-2xl"
               onClick={handleTrailerClose}
-            >X</button>
+            >
+              X
+            </button>
             <iframe
               src={trailerData}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -154,7 +166,17 @@ const handleTrailerClose = () => {
       )}
 
       <div className="hidden md:block">
-        <Carousel className="w-screens max-h-[600px] flex flex-col p-0 ">
+        <Carousel
+          className="w-screens max-h-[600px] flex flex-col p-0 "
+          opts={{
+            loop: true,
+          }}
+          plugins={[
+            Autoplay({
+              delay: 3000,
+            }),
+          ]}
+        >
           <CarouselContent>
             {nowPlayingData.slice(0, 10).map((movie) => (
               <CarouselItem key={movie.id}>

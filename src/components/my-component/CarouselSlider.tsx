@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Movie } from "@/types/Movie-type";
 import Autoplay from "embla-carousel-autoplay";
+import { Skeleton } from "../ui/skeleton";
 
 const TMDB_BASE_URL = process.env.TMDB_BASE_URL;
 const TMDB_API_TOKEN = process.env.TMDB_API_TOKEN;
@@ -22,8 +23,10 @@ const TMDB_API_TOKEN = process.env.TMDB_API_TOKEN;
 function CarouselSlider() {
   const [nowPlayingData, setNowPlayingData] = useState<Movie[]>([]);
   const [trailerData, setTrailerData] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const getNowPlayingMovieData = async () => {
+    setLoading(true);
     try {
       const response = await axios.get(
         `${TMDB_BASE_URL}/movie/now_playing?language=en-US&page=1`,
@@ -36,6 +39,8 @@ function CarouselSlider() {
       setNowPlayingData(response.data.results);
     } catch (err) {
       console.log(err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -84,6 +89,7 @@ function CarouselSlider() {
   return (
     <div>
       <div className="md:hidden">
+        {loading && <Skeleton className="h-[100%] w-[100%] rounded-xl" />}
         <Carousel
           className="w-screen flex flex-col p-0 "
           opts={{
@@ -166,6 +172,7 @@ function CarouselSlider() {
       )}
 
       <div className="hidden md:block">
+        {loading && <Skeleton className="h-[100%] w-[100%] rounded-xl" />}
         <Carousel
           className="w-screens max-h-[600px] flex flex-col p-0 "
           opts={{
@@ -184,6 +191,9 @@ function CarouselSlider() {
                   <Card>
                     <CardContent className="p-0 ">
                       <div className="">
+                        {loading && (
+                          <Skeleton className="h-[100%] w-[100%] rounded-xl" />
+                        )}
                         <Image
                           src={`https://image.tmdb.org/t/p/w1280${movie.backdrop_path}`}
                           width={10000}

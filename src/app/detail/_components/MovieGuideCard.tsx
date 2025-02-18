@@ -8,8 +8,9 @@ import { Play, Star } from "lucide-react";
 import Image from "next/image";
 import { Director } from "@/types/Direction-type";
 import { CastMember } from "@/types/CastMember";
+import { Skeleton } from "@/components/ui/skeleton";
 
-const TMDB_BASE_URL = process.env.TMDB_BASE_URL;
+const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
 const TMDB_API_TOKEN = process.env.TMDB_API_TOKEN;
 
 function MovieGuideCard() {
@@ -19,6 +20,7 @@ function MovieGuideCard() {
   const [director, setDirector] = useState<Director | null>(null);
   const [credits, setCredits] = useState<CastMember[] | null>(null);
   const [trailerData, setTrailerData] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const formatRuntime = (minutes: number) => {
     const hours = Math.floor(minutes / 60);
@@ -27,6 +29,7 @@ function MovieGuideCard() {
   };
 
   const getTrailerData = async (id: number) => {
+    setLoading(true);
     try {
       const response = await axios.get(
         `${TMDB_BASE_URL}/movie/${id}/videos?language=en-US`,
@@ -50,8 +53,12 @@ function MovieGuideCard() {
         setTrailerData(null);
       }
       console.log("Trailer is hereeeeee", response);
+      console.log("suyjdgfywjg");
+      
     } catch (err) {
       console.log(err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -115,6 +122,7 @@ function MovieGuideCard() {
 
   return (
     <div className="flex flex-col items-center">
+      {loading && <Skeleton className="h-[100%] w-[100%] rounded-xl" />}
       <div className="lg:hidden">
         <div className="flex justify-between p-5">
           <div className="justify-start items-center text-2xl font-semibold">
